@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Imperial Lib</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>Imperial Lib</header>
+
+  <div class="container">
+    <input type="text" id="youtubeLink" placeholder="Cole o link do YouTube aqui" />
+    <button onclick="addMusic()">Adicionar Música</button>
+
+    <div class="music-list-container">
+      <ul id="musicList" class="music-list"></ul>
+    </div>
+
+    <div class="player" id="playerControls" style="display: none;">
+      <div id="currentSong" class="current-song">Nenhuma música tocando</div>
+      
+      <!-- Barra de Progresso Adicionada Aqui -->
+      <div class="progress-container">
+        <input type="range" id="progressBar" class="progress-bar" value="0" min="0" max="100">
+        <div class="time-display">
+          <span id="currentTime">0:00</span>
+          <span id="duration">0:00</span>
+        </div>
+      </div>
+      
+      <div class="player-controls">
+        <button onclick="playPrev()">◀ Anterior</button>
+        <button onclick="togglePlayPause()" id="playPauseBtn">⏸ Pausar</button>
+        <button onclick="playNext()">Próxima ▶</button>
+      </div>
+    </div>
+    
+    <div id="playerContainer"></div>
+  </div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="script.js"></script>
+</body>
+</html>
