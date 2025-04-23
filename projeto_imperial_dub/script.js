@@ -236,26 +236,3 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-// Na função extractVideoId, adicione validação reforçada
-function extractVideoId(url) {
-  if (!url) return null;
-  const regex = /(?:\?v=|\/embed\/|\.be\/|&v=)([a-zA-Z0-9_-]{11})/;
-  const match = url.match(regex);
-  return match && /^[a-zA-Z0-9_-]{11}$/.test(match[1]) ? match[1] : null;
-}
-
-// Na função addMusic, adicione feedback visual
-function addMusic() {
-  const input = document.getElementById("youtubeLink");
-  const button = document.querySelector("button[onclick='addMusic()']");
-  const originalText = button.textContent;
-  
-  button.textContent = "Processando...";
-  button.disabled = true;
-  
-  // Restante do código...
-  
-  // No final (tanto no success quanto no error):
-  button.textContent = originalText;
-  button.disabled = false;
-}
