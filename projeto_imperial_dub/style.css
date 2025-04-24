@@ -1,144 +1,195 @@
 body {
-    background-color: #121212;
-    color: white;
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 0;
-  }
+  background-color: #121212;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #1db954;
+  padding: 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  position: relative;
+}
+
+#themeToggle {
+  position: absolute;
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.container {
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+input[type="text"] {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 15px;
+  margin-left: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #1db954;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #1ed760;
+}
+
+.music-list-container {
+  height: 300px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  margin: 8px 0;
+}
+
+.music-list-container::-webkit-scrollbar {
+  display: none;
+}
+
+.music-list {
+  list-style: none;
+  padding: 0;
+}
+
+.music-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+  background-color: #282828;
+  padding: 10px;
+  border-radius: 5px
   
-  header {
-    background-color: #1db954;
-    padding: 20px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-  }
+}
   
-  .container {
-    padding: 20px;
-    max-width: 600px;
-    margin: auto;
-  }
-  
-  input[type="text"] {
-    width: 80%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  button {
-    padding: 10px 15px;
-    margin-left: 5px;
-    border: none;
-    border-radius: 5px;
-    background-color: #1db954;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  button:hover {
-    background-color: #1ed760;
-  }
-  
-  .music-list-container {
-    height: 300px;
-    overflow-y: auto;
-    scrollbar-width: none;
-    margin: 8px 0;
-  }
-  
-  .music-list-container::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .music-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .music-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 8px 0;
-    background-color: #282828;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  
-  .music-item.playing {
+.music-item.playing {
     background-color: #1db954;
     color: black;
-  }
+}
   
-  .music-item.playing span:first-child {
+.music-item.playing span:first-child {
     display: inline-block;
     white-space: nowrap;
     animation: scrollText 8s linear infinite;
     padding-left: 100%;
-  }
+}
   
-  @keyframes scrollText {
+@keyframes scrollText {
     0% { transform: translateX(0); }
     100% { transform: translateX(-100%); }
-  }
+}
   
-  .player {
+.player {
     margin-top: 30px;
+    margin-bottom: 20px;
     text-align: center;
     padding: 15px;
     background-color: #282828;
     border-radius: 10px;
-  }
+}
   
-  .current-song {
+.current-song {
     font-size: 18px;
     margin-bottom: 15px;
     font-weight: bold;
-  }
+}
   
-  /* NOVOS ESTILOS DA BARRA DE PROGRESSO */
-  .progress-container {
+.progress-container {
     width: 100%;
     margin: 15px 0;
-  }
+}
   
-  .progress-bar {
+.progress-bar {
     width: 100%;
     height: 6px;
     border-radius: 3px;
     background: #535353;
-    
-  }
+}
   
-  .progress-bar::-webkit-slider-thumb {
+.progress-bar::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 16px;
     height: 16px;
     border-radius: 50%;
     background: #1db954;
     cursor: pointer;
-  }
+}
   
-  .time-display {
+.time-display {
     display: flex;
     justify-content: space-between;
     font-size: 12px;
     color: #b3b3b3;
     margin-top: 5px;
-  }
+}
   
-  .player-controls {
+.player-controls {
     display: flex;
     justify-content: center;
     gap: 10px;
     margin-top: 15px;
-  }
+}
   
-  #playerContainer {
+#error-message {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+}
+  
+#playerContainer {
     display: none;
-  }
+}
+
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+    padding-top: 60px; 
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

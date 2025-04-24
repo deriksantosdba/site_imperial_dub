@@ -8,11 +8,15 @@
 </head>
 <body>
 
-  <header>IMPERIOAL LIB</header>
+  <header>
+    IMPERIOAL LIB
+    <button id="themeToggle">🌙</button>
+  </header>
 
   <div class="container">
     <input type="text" id="youtubeLink" placeholder="Cole o link do YouTube aqui" />
     <button onclick="addMusic()">Adicionar Música</button>
+    <div id="error-message" class="error-message"></div>
 
     <div class="music-list-container">
       <ul id="musicList" class="music-list"></ul>
@@ -21,7 +25,6 @@
     <div class="player" id="playerControls" style="display: none;">
       <div id="currentSong" class="current-song">Nenhuma música tocando</div>
       
-      <!-- Barra de Progresso Adicionada Aqui -->
       <div class="progress-container">
         <input type="range" id="progressBar" class="progress-bar" value="0" min="0" max="100">
         <div class="time-display">
@@ -32,12 +35,25 @@
       
       <div class="player-controls">
         <button onclick="playPrev()">◀ Anterior</button>
-        <button onclick="togglePlayPause()" id="playPauseBtn">⏸ Pausar</button>
+        <button onclick="togglePlayPause()" id="playPauseBtn">⏸ Pausar  </button>
         <button onclick="playNext()">Próxima ▶</button>
+        <button onclick="repeatSong()">🔁 Repetir</button>
+        <button onclick="shufflePlaylist()">🔀 Aleatório</button>
       </div>
     </div>
     
     <div id="playerContainer"></div>
+    <button onclick="clearPlaylist()">Limpar Playlist</button>
+    <button onclick="showFavorites()">Mostrar Favoritas</button>
+    <button onclick="showHistory()">Mostrar Histórico</button>
+  </div>
+
+  <div id="helpModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeHelp()">&times;</span>
+      <h2>Ajuda</h2>
+      <p>Instruções sobre como usar o aplicativo...</p>
+    </div>
   </div>
 
   <script src="https://www.youtube.com/iframe_api"></script>

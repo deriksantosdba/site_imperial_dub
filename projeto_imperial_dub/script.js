@@ -2,7 +2,12 @@ let playlist = JSON.parse(localStorage.getItem("playlist")) || [];
 let currentIndex = 0;
 let player;
 let videoTitles = JSON.parse(localStorage.getItem("videoTitles")) || {};
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+let history = JSON.parse(localStorage.getItem("history")) || [];
 let progressInterval;
+let isRepeating = false;
+let isShuffled = false;
+let isDarkTheme = true;
 
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('playerContainer', {
@@ -29,7 +34,11 @@ function onPlayerReady(event) {
 
 function onPlayerStateChange(event) {
   if (event.data == YT.PlayerState.ENDED) {
-    playNext();
+    if (isRepeating) {
+      playMusic(currentIndex);
+    } else {
+      playNext();
+    }
   }
   
   if (event.data == YT.PlayerState.PLAYING) {
@@ -47,7 +56,7 @@ function updateProgressBar() {
   const duration = player.getDuration();
   const currentTime = player.getCurrentTime();
   const progress = (currentTime / duration) * 100;
-  
+
   document.getElementById('progressBar').value = progress;
   document.getElementById('currentTime').textContent = formatTime(currentTime);
   document.getElementById('duration').textContent = formatTime(duration);
@@ -99,8 +108,9 @@ function addMusic() {
     }
     
     document.getElementById("youtubeLink").value = "";
+    document.getElementById("error-message").textContent = ""; // Clear error message
   } else {
-    alert("Link do YouTube inválido.");
+    document.getElementById("error-message").textContent = "Link do YouTube inválido.";
   }
 }
 
@@ -126,6 +136,7 @@ function renderPlaylist() {
       <div>
         <button onclick="playMusic(${index})">▶</button>
         <button onclick="removeMusic(${index})">🗑</button>
+        <button onclick="toggleFavorite('${id}')">⭐</button>
       </div>
     `;
     list.appendChild(li);
@@ -149,6 +160,12 @@ function playMusic(index) {
     
     updateCurrentSongDisplay(videoId);
     renderPlaylist();
+    
+    // Add to history
+    if (!history.includes(videoId)) {
+      history.push(videoId);
+      localStorage.setItem("history", JSON.stringify(history));
+    }
   }
 }
 
@@ -168,7 +185,6 @@ function playPrev() {
   currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
   playMusic(currentIndex);
 }
-
 function togglePlayPause() {
   if (!player) return;
   
@@ -226,6 +242,68 @@ function removeMusic(index) {
 function savePlaylist() {
   localStorage.setItem("playlist", JSON.stringify(playlist));
 }
+
+function clearPlaylist() {
+  playlist = [];
+  videoTitles = {};
+  localStorage.removeItem("playlist");
+  localStorage.removeItem("videoTitles");
+  renderPlaylist();
+  document.getElementById("currentSong").textContent = "Nenhuma música tocando";
+  if (player) player.stopVideo();
+}
+
+function repeatSong() {
+  isRepeating = !isRepeating;
+  const repeatBtn = document.querySelector('.player-controls button:nth-child(4)');
+  repeatBtn.style.backgroundColor = isRepeating ? '#1ed760' : '#1db954';
+}
+
+function shufflePlaylist() {
+  isShuffled = !isShuffled;
+  const shuffleBtn = document.querySelector('.player-controls button:nth-child(5)');
+  shuffleBtn.style.backgroundColor = isShuffled ? '#1ed760' : '#1db954';
+  
+  if (isShuffled) {
+    playlist = playlist.sort(() => Math.random() - 0.5);
+    currentIndex = 0; // Reset to the first song in the shuffled playlist
+    renderPlaylist();
+  }
+}
+
+function toggleFavorite(videoId) {
+  if (favorites.includes(videoId)) {
+    favorites = favorites.filter(id => id !== videoId);
+  } else {
+    favorites.push(videoId);
+  }
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+  renderPlaylist();
+}
+
+function showFavorites() {
+  const favoriteList = playlist.filter(videoId => favorites.includes(videoId));
+  renderPlaylist(favoriteList);
+}
+
+function showHistory() {
+  const historyList = history.map(videoId => videoTitles[videoId] || `Música ${playlist.indexOf(videoId) + 1}`);
+  alert("Histórico de Reprodução:\n" + historyList.join("\n"));
+}
+
+function closeHelp() {
+  document.getElementById("helpModal").style.display = "none";
+}
+
+function openHelp() {
+  document.getElementById("helpModal").style.display = "block";
+}
+
+document.getElementById("themeToggle").addEventListener("click", () => {
+  isDarkTheme = !isDarkTheme;
+  document.body.style.backgroundColor = isDarkTheme ? "#121212" : "#ffffff";
+  document.body.style.color = isDarkTheme ? "white" : "black";
+});
 
 window.addEventListener('DOMContentLoaded', () => {
   renderPlaylist();
